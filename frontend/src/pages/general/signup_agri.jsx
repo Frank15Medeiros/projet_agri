@@ -1,7 +1,8 @@
+// src/pages/general/Signup_agri.jsx
 import React from 'react';
-import '../cssfolder/signup.css'; // Assuming you move your CSS to signup.css
+import '../../cssfolder/signup_agri.css';
 
-const Signup = () => {
+const Signup_agri = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         // Handle form submission logic here
@@ -9,8 +10,40 @@ const Signup = () => {
 
     return (
         <div className="form-container">
-            <h2>Inscription</h2>
+            <h2>Inscription Agriculteur</h2>
             <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label htmlFor="username">Nom d'utilisateur :</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Entrez votre nom d'utilisateur"
+                        required
+                        autoComplete="off"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="email">Email :</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Entrez votre email"
+                        required
+                        autoComplete="off"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password">Mot de passe :</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Entrez votre mot de passe"
+                        required
+                    />
+                </div>
                 <div className="form-group">
                     <label htmlFor="name">Nom :</label>
                     <input
@@ -97,4 +130,4 @@ const Signup = () => {
     );
 };
 
-export default Signup;
+export default Signup_agri;

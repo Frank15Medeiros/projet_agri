@@ -1,5 +1,5 @@
 import React from 'react';
-import '../cssfolder/login.css'; // Assuming you move your CSS to login.css
+import '../../cssfolder/login.css'; // Assuming you move your CSS to login.css
 
 const Login = () => {
     const handleSubmit = (event) => {
