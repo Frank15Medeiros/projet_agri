@@ -8,6 +8,8 @@ import Agricu from './pages/agriculteur/ventagricu';
 import ClientProductPage from './pages/client/ClientProductPage';
 import AdminProductsPage from './pages/admin/AdminProductsPage';
 import AdminPurchaseList from './pages/admin/AdminPurchaseList';
+import Product from './pages/products/AddProduct';
+import ManageProduct from './pages/products/ManageProduct';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
         <Route path='/products' element={<ClientProductPage />} />
         <Route path='/admin/products' element={<AdminProductsPage />} />
         <Route path='/admin/purchases' element={<AdminPurchaseList />} />
+        <Route path='/add-product' element={<Product />} />
+        <Route path='/ManageProduct' element={<ManageProduct />} />
       </Routes>
     </BrowserRouter>
   );

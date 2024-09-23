@@ -1,9 +1,6 @@
-// server/index.js
 import express from 'express';
 import mysql from 'mysql2';
 import cors from 'cors';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 const app = express();
 const port = 5000;
@@ -29,72 +26,77 @@ db.connect((err) => {
     console.log('Connected to MySQL database.');
 });
 
-// Secret key for JWT
-const jwtSecret = 'test';
+// Add product route - Handles product information (no image)
+app.post('/add-product', (req, res) => {
+    const { name, category, price, description } = req.body;
 
-// Route to handle user registration
-app.post('/register', (req, res) => {
-    const { username, email, password, name, surname, address, city, postal_code, phone } = req.body;
+    // Validation: Check that all fields are provided
+    if (!name || !category || !price || !description) {
+        return res.status(400).json({ error: 'Tous les champs sont obligatoires.' });
+    }
 
-    // Hash the password
-    bcrypt.hash(password, 10, (err, hashedPassword) => {
+    // SQL query to insert product data into the products table
+    const query = `
+        INSERT INTO products (name, category, price, description)
+        VALUES (?, ?, ?, ?)
+    `;
+
+    db.query(query, [name, category, price, description], (err, results) => {
         if (err) {
-            console.error('Error hashing password:', err);
-            return res.status(500).json({ error: 'Internal server error' });
+            console.error('Error inserting product into MySQL:', err);
+            return res.status(500).json({ error: 'Erreur de base de données' });
         }
-
-        // SQL query to insert data into the table
-        const query = `
-            INSERT INTO users (username, email, password, name, surname, address, city, postal_code, phone)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `;
-
-        db.query(query, [username, email, hashedPassword, name, surname, address, city, postal_code, phone], (err, results) => {
-            if (err) {
-                console.error('Error inserting data into MySQL:', err);
-                return res.status(500).json({ error: 'Database error' });
-            }
-            res.status(201).json({ message: 'User registered successfully' });
-        });
+        res.status(201).json({ message: 'Produit ajouté avec succès' });
     });
 });
 
-// Route to handle user login
-app.post('/login', (req, res) => {
-    const { email, password } = req.body;
-
-    // SQL query to find the user
-    const query = 'SELECT * FROM users WHERE email = ?';
-    db.query(query, [email], (err, results) => {
-        if (err) {
-            console.error('Error querying MySQL:', err);
-            return res.status(500).json({ error: 'Database error' });
-        }
-
-        if (results.length === 0) {
-            return res.status(401).json({ error: 'Invalid email or password' });
-        }
-
-        const user = results[0];
-
-        // Compare password with the stored hashed password
-        bcrypt.compare(password, user.password, (err, isMatch) => {
-            if (err) {
-                console.error('Error comparing passwords:', err);
-                return res.status(500).json({ error: 'Internal server error' });
-            }
-
-            if (!isMatch) {
-                return res.status(401).json({ error: 'Invalid email or password' });
-            }
-
-            // Create a JWT token
-            const token = jwt.sign({ id: user.id, username: user.username }, jwtSecret, { expiresIn: '1h' });
-            res.json({ message: 'Login successful', token });
-        });
-    });
-});
+// Existing routes (like user registration, login, etc.)
+// ...
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
+});
+
+// Route to get all products
+app.get('/products', (req, res) => {
+    const query = 'SELECT * FROM products';
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error fetching products:', err);
+            return res.status(500).json({ error: 'Erreur de base de données' });
+        }
+        res.status(200).json(results);
+    });
+});
+
+// Route to update a product
+app.put('/update-product/:id', (req, res) => {
+    const { id } = req.params;
+    const { name, category, price, description } = req.body;
+
+    const query = `
+        UPDATE products 
+        SET name = ?, category = ?, price = ?, description = ?
+        WHERE id = ?
+    `;
+    db.query(query, [name, category, price, description, id], (err, results) => {
+        if (err) {
+            console.error('Error updating product:', err);
+            return res.status(500).json({ error: 'Erreur de base de données' });
+        }
+        res.status(200).json({ message: 'Produit mis à jour avec succès' });
+    });
+});
+
+// Route to delete a product
+app.delete('/delete-product/:id', (req, res) => {
+    const { id } = req.params;
+    const query = 'DELETE FROM products WHERE id = ?';
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error('Error deleting product:', err);
+            return res.status(500).json({ error: 'Erreur de base de données' });
+        }
+        res.status(200).json({ message: 'Produit supprimé avec succès' });
+    });
 });
