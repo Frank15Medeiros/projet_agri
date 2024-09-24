@@ -28,33 +28,26 @@ db.connect((err) => {
 
 // Add product route - Handles product information (no image)
 app.post('/add-product', (req, res) => {
-    const { name, category, price, description } = req.body;
+    const { name, category, quantity, unit, price, description } = req.body;
 
     // Validation: Check that all fields are provided
-    if (!name || !category || !price || !description) {
+    if (!name || !category || quantity === undefined || !unit || !price || !description) {
         return res.status(400).json({ error: 'Tous les champs sont obligatoires.' });
     }
 
     // SQL query to insert product data into the products table
     const query = `
-        INSERT INTO products (name, category, price, description)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO products (name, category, quantity, unit, price, description)
+        VALUES (?, ?, ?, ?, ?, ?)
     `;
 
-    db.query(query, [name, category, price, description], (err, results) => {
+    db.query(query, [name, category, quantity, unit, price, description], (err, results) => {
         if (err) {
             console.error('Error inserting product into MySQL:', err);
             return res.status(500).json({ error: 'Erreur de base de données' });
         }
         res.status(201).json({ message: 'Produit ajouté avec succès' });
     });
-});
-
-// Existing routes (like user registration, login, etc.)
-// ...
-
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
 });
 
 // Route to get all products
@@ -72,14 +65,14 @@ app.get('/products', (req, res) => {
 // Route to update a product
 app.put('/update-product/:id', (req, res) => {
     const { id } = req.params;
-    const { name, category, price, description } = req.body;
+    const { name, category, quantity, unit, price, description } = req.body;
 
     const query = `
         UPDATE products 
-        SET name = ?, category = ?, price = ?, description = ?
+        SET name = ?, category = ?, quantity = ?, unit = ?, price = ?, description = ?
         WHERE id = ?
     `;
-    db.query(query, [name, category, price, description, id], (err, results) => {
+    db.query(query, [name, category, quantity, unit, price, description, id], (err, results) => {
         if (err) {
             console.error('Error updating product:', err);
             return res.status(500).json({ error: 'Erreur de base de données' });
@@ -99,4 +92,8 @@ app.delete('/delete-product/:id', (req, res) => {
         }
         res.status(200).json({ message: 'Produit supprimé avec succès' });
     });
+});
+
+app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
 });
