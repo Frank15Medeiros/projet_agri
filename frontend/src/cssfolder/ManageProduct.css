@@ -1,25 +1,164 @@
-.edit-button {
-    background-color: #007bff; /* Blue for edit button */
+.manage-products {
+    padding: 20px;
+    background-color: #ffffff;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    color: #333;
+}
+
+.message {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    color: #4caf50; /* Success message color */
+}
+
+.table-container {
+    max-height: 70vh;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.product-item {
+    background-color: #fafafa;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: transform 0.2s ease-in-out;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.product-item p {
+    flex: 1;
+    margin: 0 15px;
+    font-size: 1.2em;
+    white-space: nowrap; /* Prevents text from wrapping to a new line */
+    overflow: hidden; /* Ensures content is clipped to fit */
+    text-overflow: ellipsis; /* Adds '...' at the end of overflowing text */
+}
+
+.product-item h3 {
+    margin: 0;
+    flex: 1;
+    font-size: 1.5em;
+    overflow: hidden; /* Ensures content is clipped to fit */
+    text-overflow: ellipsis; /* Adds '...' at the end of overflowing text */
+    white-space: nowrap; /* Prevents text from wrapping to a new line */
+}
+
+.actions {
+    flex-shrink: 0;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-green {
+    background-color: #4caf50;
     color: white;
-    padding: 5px 10px;
+    padding: 10px 15px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
 }
 
-.edit-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+.btn-green:hover {
+    background-color: #45a049;
 }
 
-.delete-button {
-    background-color: #dc3545; /* Red for delete button */
+.btn-blue {
+    background-color: #008cba;
     color: white;
-    padding: 5px 10px;
+    padding: 10px 15px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
 }
 
-.delete-button:hover {
-    background-color: #c82333; /* Darker red on hover */
+.btn-blue:hover {
+    background-color: #007bb5;
+}
+
+.btn-red {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-red:hover {
+    background-color: #e53935;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    width: 500px;
+}
+
+.modal h3 {
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+.modal input, .modal textarea {
+    width: calc(100% - 20px);
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.modal button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.modal button:first-of-type {
+    margin-right: 10px;
+}
+
+.modal button[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+}
+
+.modal button[type="button"] {
+    background-color: #f44336;
+    color: white;
+}
+
+.modal button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.modal button[type="button"]:hover {
+    background-color: #e53935;
 }
